@@ -20,10 +20,12 @@ const tour = require('./routes/tours');
 // routes middlewares
 app.use('/api/v1/tour', tour);
 
+// Error for invalid path
 app.all('*', (req, res, next) => {
     next(new APIError(`Cannot find ${req.originalUrl} on this server`, 404))
 });
 
+// Global error middleware
 app.use(globalErrorHandler);
 
 const DbURI = 'mongodb://localhost/natour';

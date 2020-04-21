@@ -1,6 +1,7 @@
 const { Tour } = require('../models/tours');
 const APIFeature = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
+const APIError = require('../utils/apiError');
 
 // Tour stats
 const tourStats = catchAsync (async (req, res) => {
