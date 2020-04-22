@@ -16,9 +16,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // routes
 const tour = require('./routes/tours');
+const user = require('./routes/users');
 
 // routes middlewares
 app.use('/api/v1/tour', tour);
+app.use('/api/v1/user', user);
 
 // Error for invalid path
 app.all('*', (req, res, next) => {

@@ -53,9 +53,7 @@ const readOneTour = catchAsync (async (req, res, next) => {
     await Tour.findById(req.params.id)
         .exec((err, result) => {
             if (!result) {
-                return res
-                        .status(404)
-                        .json({'message': 'Not found'})
+                return next(new APIError('Given tour ID not found', 404))
             }
             res
             .status(200)
@@ -118,12 +116,7 @@ const deleteOneTour = catchAsync(async (req, res, next) => {
     await Tour.findByIdAndDelete(req.params.id)
         .exec((err, result) => {
             if (!result) {
-                return res
-                .status(404)
-                .json({
-                    "status": "fail",
-                    "message": "Not found" 
-                });
+               return next(new APIError('Tour ID not found', 404))
             }
             res
             .status(200)
@@ -132,7 +125,7 @@ const deleteOneTour = catchAsync(async (req, res, next) => {
 });
 
 // UPDATE
-const updateOneTour =  catchAsync(async (req, res) => {
+const updateOneTour =  catchAsync(async (req, res, next) => {
     const { 
         name,
         duration,
@@ -160,11 +153,17 @@ const updateOneTour =  catchAsync(async (req, res) => {
         imageCover,
         images,
         startDates
-     });
+     })
+        .exec((err, result) => {
+            if (!result) {
+                return next(new APIError('Tour ID not found', 404));
+            }
+            res
+            .status(200)
+            .json({"message": "Update done"});
+        });
 
-    res
-    .status(200)
-    .json({"message": "Update done"});
+    
 });
 
 module.exports = {
