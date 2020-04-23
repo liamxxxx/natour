@@ -18,6 +18,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 const tour = require('./routes/tours');
 const user = require('./routes/users');
 
+app.use((req, res, next) => {
+    console.log(req.headers);
+    next();
+});
 // routes middlewares
 app.use('/api/v1/tour', tour);
 app.use('/api/v1/user', user);
@@ -26,6 +30,8 @@ app.use('/api/v1/user', user);
 app.all('*', (req, res, next) => {
     next(new APIError(`Cannot find ${req.originalUrl} on this server`, 404))
 });
+
+
 
 // Global error middleware
 app.use(globalErrorHandler);

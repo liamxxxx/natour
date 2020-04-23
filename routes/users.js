@@ -9,7 +9,7 @@ router
     .post(authController.signup)
 
 router
-    .route('/signin')
+    .route('/login')
     .post(authController.signin)
 
 module.exports = router;

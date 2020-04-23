@@ -40,7 +40,7 @@ const globalErrorHandler = (err, req, res, next) => {
     // } else if (process.env.NODE_ENV === 'development') {
     //      errorDev(err, res)
     // }
-    errorProd(err, res);
+    errorDev(err, res);
 }
 
 module.exports = globalErrorHandler;
