@@ -15,7 +15,7 @@ router
 router
     .route('/:id')
     .get(controller.readOneTour)
-    .delete(controller.deleteOneTour)
+    .delete(authController.protect, authController.restrictBy('admin'), controller.deleteOneTour)
     .put(controller.updateOneTour)
 
 module.exports = router;

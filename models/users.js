@@ -27,7 +27,12 @@ const usersShemas = new mongoose.Schema({
         type: String, 
         required: [true, 'Please confirm your password'] 
     },
-    changedPasswordAt: { type: Date, default: Date.now() }
+    changedPasswordAt: { type: Date, default: Date.now() },
+    role: { 
+        type: String, 
+        enum: ['guess', 'admin', 'user'],
+        default: 'guess'
+    }
 });
 
 usersShemas.pre('save', function(next) {
@@ -37,7 +42,8 @@ usersShemas.pre('save', function(next) {
 
 usersShemas.methods.changedPasswordAfter = function(JWTTimestamp) {
     if (this.changedPasswordAt) {
-        console.log(changedPasswordAt, JWTTimestamp )
+        const changedTimestamp = parseInt(this.changedPasswordAt.getTime() / 1000, 10);
+        console.log(changedTimestamp, JWTTimestamp )
     }
     return false;
 }

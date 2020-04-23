@@ -3,9 +3,7 @@ const jwt = require('jsonwebtoken');
 const catchAsync = require('../utils/catchAsync');
 const APIError = require('../utils/apiError');
 const hashPassword = require('../utils/hashPassword');
-const verifiedPassword = require('../utils/verifPassword');
 const bcrypt = require('bcryptjs');
-const signToken = require('../utils/signToken');
 const {promisify} = require('util');
 
 
@@ -85,7 +83,17 @@ exports.protect = catchAsync(async (req, res, next) => {
 
     if (!freshUser) return next(new APIError('User belonging not available on given token, Please login'));
 
-    if (freshUser.changedPasswordAfter(decoded.iat))
+    // freshUser.changedPasswordAfter(decoded.iat);
+    req.user = freshUser;
 
     next()
 });
+
+exports.restrictBy = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            return next(new APIError('Do not have permission to performed this action', 401));
+        }
+        next();
+    }
+}
